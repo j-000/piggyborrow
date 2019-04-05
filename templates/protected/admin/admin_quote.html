@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <h4>Quotes List</h4>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Created</th>
+            <th>User</th>
+            <th>Requested</th>
+            <th>Interest Rate</th>
+            <th>Period</th>
+            <th>Due date</th>
+            <th>Payable</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="{{ url_for('admin_quote',quote_id=quote.id) }}"><span class="badge badge-info">#{{ quote.id }}</span></a></td>
+            <td>{{ moment(quote.creation_timestamp).format('LLL') }}</td>
+            <td>{{ quote.get_user().name }}</td>
+            <td>£ {{ quote.amount_requested }}</td>
+            <td>{{ quote.get_rate().value }} % / day</td>
+            <td>{{ quote.duration_in_days }} days</td>
+            <td>{{ moment(quote.get_due_date()).format('LLL') }}</td>
+            <td>£ {{ "{:0.2f}".format(quote.get_total_payable()) }}</td>
+            <td>{{ quote.get_status().name }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <hr>
+      <form action="{{ url_for('admin_quote', quote_id=quote.id) }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.new_status)}}
+        <input class="btn btn-outline-dark" type="submit" value="Confirm">
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

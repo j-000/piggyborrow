@@ -1,0 +1,80 @@
+<html>
+<head>
+  <title>123MM</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="{{ url_for('static', filename='css/bootstrap2.min.css') }}" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,800" rel="stylesheet" type="text/css">
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+      <![endif]-->
+  {% block extracss %}
+  {% endblock %}
+  {{ moment.include_jquery() }}
+  {{ moment.include_moment() }}
+  </head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="{{ url_for('index') }}">
+      <img src="{{ url_for('static', filename='images/piggyborrow.png') }}" height="40">
+    </a>
+
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        {% if current_user.is_authenticated %}
+          {% if current_user.is_admin %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('admin') }}">Admin Area</a>
+            </li>
+          {% endif %}
+          {% if current_user.can_borrow() %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('quotation') }}">Quote</a>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('pay') }}">Pay</a>
+            </li>
+          {% endif %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('user_calendar') }}">Calendar</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('reports') }}">Reports</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('profile')}}">Profile</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('help') }}">Help</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+          </li>
+        {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>
+  <br>
+  {% block body %}
+  {% endblock %}
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  {% block extrajs %}
+  {% endblock %}
+  </body>
+</html>

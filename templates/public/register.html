@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col-md">
+      <div class="container-fluid login_form">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{category}}" role="alert">
+              {{ message }}
+              <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+        <a id="login" href="{{ url_for('login') }}">Have an account? Click here to login!</a>
+        <hr>
+        <h3 class="text-left">Register</h3>
+        <form action="{{ url_for('register') }}" method="POST">
+          {{ form.hidden_tag() }}
+          {{ wtf.form_field(form.name) }}
+          {{ wtf.form_field(form.surname) }}
+          {{ wtf.form_field(form.email) }}
+          {{ wtf.form_field(form.address) }}
+          {{ wtf.form_field(form.postcode) }}
+          {{ wtf.form_field(form.password) }}
+          {{ wtf.form_field(form.password2) }}
+          <input type="submit" class="btn btn-success btn-md" value="Register">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+  $(function() {$('#login').attr('href', '{{ url_for("login") }}' + window.location.search);});
+</script>
+{% endblock %}

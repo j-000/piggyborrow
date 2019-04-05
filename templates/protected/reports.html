@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <h1>Basic Reporting</h1>
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Quotes</h4>
+            <small>Totals since joining</small>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge-info badge">Quotes</span></td>
+                  <td>{{ current_user.get_quotes_stats()['total_quotes'] }}</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-info badge">Requested</span></td>
+                  <td>{{ "£ {:0.2f}".format(current_user.get_quotes_stats()['total_amount_requested']) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Money</h4>
+            <small>Totals since joining</small>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge-info badge">Borrowed</span></td>
+                  <td>{{ "£ {:0.2f}".format(current_user.get_quotes_stats()['total_money_borrowed']) }}</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-info badge">Paid</span></td>
+                  <td>{{ "£ {:0.2f}".format(current_user.get_quotes_stats()['total_interest_paid'] + current_user.get_quotes_stats()['total_money_borrowed']) }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Interest</h4>
+            <small>Totals since joining</small>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge-info badge">Paid</span></td>
+                  <td>{{ "£ {:0.2f}".format(current_user.get_quotes_stats()['total_interest_paid']) }}</td>
+                </tr>
+                <tr>
+                  <td><span class="badge-info badge">% of borrowed</span></td>
+                  <td> {% if current_user.get_quotes_stats()['total_money_borrowed'] > 0 %} {{ "{:0.2f}%".format(current_user.get_quotes_stats()['total_interest_paid'] / current_user.get_quotes_stats()['total_money_borrowed'] * 100) }} {%else%} 0.0% {% endif %}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row text-center">
+    <div class="col">
+      <h1>Custom Reporting</h1>
+      <p>Comming soon!</p>
+    </div>
+  </div> 
+</div>
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+<link href="https://fonts.googleapis.com/css?family=Baloo+Chettan" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.1/css/bootstrap-slider.min.css">
+<style type="text/css">
+  *{
+    font-family: 'Baloo Chettan', cursive;
+
+  }
+ .responsive {
+  width: 100%;
+  height: 400px;
+  background-image: url('static/images/pigg.jpg');
+  background-repeat: repeat-x;
+  background-size: contain;
+}
+#initial_quote{
+  border: 1px solid black;
+  min-height: 100px;
+  float: right;
+}
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 25px;
+  border-radius: 5px;   
+  /*background: #28a745;*/
+  outline: none;
+  opacity: 0.9;
+  -webkit-transition: .2s;
+  background: #C6FFDD;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to left, #f7797d, #FBD786, #C6FFDD);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #f7797d, #FBD786, #C6FFDD); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%; 
+  background: #28a745;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #28a745;
+  cursor: pointer;
+}
+
+#demo{
+  font-size: 60pt;
+}
+
+.card:hover{
+  cursor: pointer;
+  -webkit-box-shadow: 0px 2px 18px -6px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 2px 18px -6px rgba(0,0,0,0.75);
+  box-shadow: 0px 2px 18px -6px rgba(0,0,0,0.75);
+}
+
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+      <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row responsive" style="margin: 0;">
+    <div class="col text-center">
+      <h1>Piggy Borrow</h1>
+      <p>I want to borrow</p>
+      <h2><span class="" id="demo"></span></h2>
+      <br>
+      <div class="slidecontainer">
+        <input style="max-width: 500px;" oninput="f1()" type="range" min="50" max="300" value="100" class="slider" id="myRange">
+      </div>
+      <br>
+      <p>For</p>
+      <div class="row" style="width: 85%; margin:auto;">
+        <div class="col">
+          <div class="card-deck">
+            <div class="card k1" style="background-color: #D5E9C0;" onclick="f2(this)">
+              <div class="card-body">
+                <h4 class="card-title">30 days<h4>
+                <span id="k1"></span>
+              </div>
+            </div>
+            <div class="card k2" style="background-color: #FACA89;" onclick="f2(this)">
+              <div class="card-body">
+                <h4 class="card-title">45 days<h4>
+                <span id="k2"></span>
+              </div>
+            </div>
+            <div class="card k3" style="background-color: #F8918B;" onclick="f2(this)">
+              <div class="card-body">
+                <h4 class="card-title">90 days<h4>
+                <span id="k3"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <a class="text-muted" href="javascript:f1()">Clear</a>
+      <br>
+      <br>
+      <p>The current daily rate of interest is set at {{ current_rate.value }}%.</p>
+      <br>
+      <a id="apply" href="{{ url_for('register') }}" class="btn btn-success btn-lg">Apply now</a>
+      <br>
+      <br>
+    </div>
+  </div>  
+</div>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+  $(function() {
+    f1();
+  });
+  function f1(){
+    var slider = document.getElementById("myRange");
+    var output = document.getElementById("demo");
+    output.innerHTML = "£ " + slider.value;
+    ['.k1','.k2','.k3'].forEach(function(e) {
+      $(e.replace('.','#')).text('');
+      $(e).show();
+    });
+    $('#apply').attr('href','{{ url_for("register") }}?h=' + window.btoa('a=' + slider.value + '&b=0'));
+  }
+  function f2(a){
+    l = {'.k1':30,'.k2':45,'.k3':90};
+    card_class = "." + a.className.split(' ')[1];
+    span_id = card_class.replace('.','#');
+    span = document.getElementById(span_id);
+
+    Object.keys(l).forEach(function(key) {
+      if(key == card_class){
+        cr = parseFloat('{{ current_rate.value }}');
+        at = parseFloat(document.getElementById("myRange").value);
+        d = l[key];
+        a = (at + (at * cr * 0.01 * d)).toFixed(2);
+        t = 'Total payable amount will be £ ' + a + '.';
+        $(span_id).text(t);
+        $('#apply').attr('href','{{ url_for("register") }}?h=' + window.btoa('a=' + a + '&b=' + d));
+      }else{
+        $(key).hide();
+      }
+    });
+  }
+</script>
+{% endblock %}

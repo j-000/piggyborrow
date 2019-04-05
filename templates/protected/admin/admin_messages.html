@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h4>Messages List - Inbox</h4>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>ID</th>
+            <th>Received</th>
+            <th>User</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for message in messages_array%}
+          <tr>
+            <td><button onclick="show_message('{{message.id}}')"type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#message_modal">
+              #{{ message.id }}
+            </button></td>
+            <td>{{ moment(message.creation_timestamp).calendar() }}</td>
+            <td>{{ message.get_user().name }}</td>
+            <td>{% if message.is_read() %} <span class="badge-success badge">Read</span> {% else %} <span class="badge-danger badge">Unread</span> {% endif %}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div class="modal" id="message_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalCenteredLabel">Message from <span id="sender" class="badge badge-success"></span></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="spinner-border text-primary" role="status" id="spinner">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <p id="message_p"></p>
+          <small><span class="badge badge-info" id="message_ts"></span></small>
+          <hr>
+          <h4>Send a message</h4>
+          <form action="{{url_for('help')}}" method="POST">
+            {{ messageform.hidden_tag() }}
+            {{ wtf.form_field(messageform.text) }}
+            <input type="submit" class="btn btn-info btn-md" value="Send">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+  function  show_message(m){
+    
+    $('#spinner').show();
+    ['#message_p','#message_ts','#sender'].forEach(function(v){$(v).text('');});
+    $.ajax({
+      url: '{{url_for("admin_messages")}}',
+      method: 'post',
+      data: {'mid':m},
+      success: function(response){
+        var a = JSON.parse(response);
+        $('#message_p').text(a.message);
+        $('#message_ts').text(moment(a.timestamp).calendar());
+        $('#sender').text(a.user);
+      },
+      error: function(error){console.log(error); alert(error);},
+      complete: function(){$('#spinner').hide()}
+    });
+  }
+</script>
+{% endblock %}

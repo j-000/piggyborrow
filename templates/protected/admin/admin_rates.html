@@ -1,0 +1,106 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css">
+  <link rel="stylesheet" media="print"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css">
+{% endblock %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-5">
+      <a class="btn btn-outline-info" href="javascript:void(0)" onclick="$('#f1').toggle()">New Rate</a>
+      <form id="f1" style="display: none;" action="{{ url_for('admin_rates') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.start_date) }}
+        {{ wtf.form_field(form.end_date) }}
+        {{ wtf.form_field(form.value) }}
+        <input class="btn btn-success" type="submit" value="Add">
+      </form> 
+    </div>
+    <div class="col">
+      <div id='calendar'></div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <h4>Rates List</h4>
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th>Rate ID</th>
+            <th>Created</th>
+            <th>Start date</th>
+            <th>Daily interest</th>
+            <th>End date</th>
+            <th>Flags</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for rate in rates %}
+            <tr>
+              <td><a href="javascript:void(0)"><span class="badge badge-info">#{{ rate.id }}</span></a></td>
+              <td>by {{ rate.get_user_details().name }} on {{ moment(rate.creation_timestamp).calendar() }}</td>
+              <td>{{moment(rate.start_date).format('LLL')}}</td>
+              <td>{{ rate.value }}%</td>
+              <td>{{moment( rate.end_date).format('LLL')}}</td>
+              <td></td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+  $( function() {
+    $( "#datepicker1" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#datepicker2" ).datepicker({ dateFormat: 'dd-mm-yy' });
+    $( "#datepicker1" ).datepicker();
+    $( "#datepicker2" ).datepicker();
+  } );
+</script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+<script type="text/javascript">
+  $(function() {
+    o = {
+      height: 500,
+      themeSystem: 'bootstrap4',
+      header: {
+        // left: 'prev,next today',
+        // center: 'title'
+        // right: 'month,agendaWeek,agendaDay'
+      },
+      events: {{ rates_for_calendar | safe }},
+      displayEventTime: false,
+      eventColor: '#378006',
+      eventTextColor: '#fff',
+      height: 250
+    }
+    $('#calendar').fullCalendar(o);
+  });
+</script>
+{% endblock %}

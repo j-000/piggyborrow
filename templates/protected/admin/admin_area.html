@@ -1,0 +1,127 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+<style type="text/css">
+  .card:hover{
+    cursor: pointer;
+    border: 1px solid grey; 
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-body text-center">
+            <a href="{{ url_for('admin_users') }}">
+              <h4 class="card-title">Users ({{ totals['users_total'] }})</h4>
+            </a>
+            <h2 class="card-text "><i class="fas fa-users"></i></h2>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-success"> New</span></td>
+                  <td><span class="badge badge-warning"> Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <a href="{{ url_for('admin_quotes') }}">
+              <h4 class="card-title">Quotes ({{ totals['quotes_total'] }})</h4>
+            </a>
+            <h2 class="card-text"><i class="fas fa-comment-dollar"></i></h2>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-success"> New</span></td>
+                  <td><span class="badge badge-warning"> Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <h4 class="card-title">Payments ({{ totals['payments_total'] }})</h4>
+            <h2 class="card-text"><i class="fas fa-credit-card"></i></h2>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-success"> New</span></td>
+                  <td><span class="badge badge-warning"> Pending</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <a href="{{ url_for('admin_messages') }}"><h4 class="card-title">Messages</h4></a>
+            <h2 class="card-text"><i class="fas fa-envelope"></i></h2>
+            <table class="table-sm table-borderless">
+              <tbody>
+                <tr>
+                  <td><span class="badge badge-success"> New (unread)</span></td>
+                  <td><span class="badge badge-warning"> Total</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col">
+      <div class="card-deck">
+        <div class="card">
+          <div class="card-body text-center">
+            <a href="{{ url_for('admin_rates') }}">
+              <h4 class="card-title">Rates ({{ current_rate.value }}%)</h4>
+            </a>
+            <h2 class="card-text"><i class="fas fa-percentage"></i></h2>
+            {%if not rate_set %}<small><span class="badge-danger badge">NO RATE SET - USING DEFAULT!</span></small>{% endif %}
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <h4 class="card-title">Reports</h4>
+            <h2 class="card-text"><i class="fas fa-chart-bar"></i></h2>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body text-center">
+            <h4 class="card-title">System config</h4>
+            <h2 class="card-text"><i class="fas fa-cog"></i></h2>
+            <small class="text-danger"><strong>System wide changes. Use caution!</strong></small>
+          </div>
+        <div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

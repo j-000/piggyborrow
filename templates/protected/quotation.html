@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+     
+     <h3>Quote</h3>
+     <form id="f1" action="{{ url_for('quotation') }}" method="POST">
+        {{ form.hidden_tag() }}
+        {{ wtf.form_field(form.amount_requested) }}
+        {{ wtf.form_field(form.duration_in_days) }}
+
+        <hr>
+        <h5>Quick Summary</h5>
+        <p id="summary_p">Borrowing <strong id="s1"></strong> for <strong id="s2"></strong> days at the daily interest rate of <strong id="s3"></strong> will result in a total payable amount of <strong id="s4"></strong> on the <strong id="s5"></strong>.</p>
+        <hr>
+        <p>Please ensure you read the above summary and confirm so by checking the box below.</p>
+        <strong class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customSwitch1" onclick="$('#get_quote').toggle()">
+          <label class="custom-control-label" for="customSwitch1">I have read the above summary and agree to the <a href="#">Terms & Conditions</a>.</label>
+        </strong>
+        <br>
+       <input style="display: none;" id="get_quote" type="submit" value="Get quote!" class="btn btn-success">
+     </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript">
+  $("#f1").change(function(){
+    var a,p,r,t;
+    a = $('#amount_field').val();
+    p = $('#period_field').val();
+    r = '{{current_rate.value}}';
+    t = (parseFloat(a) + parseFloat(a * p * r * 0.01)).toFixed(2)
+    if(a == '0' || p == '0'){
+
+    }else{
+      $('#s1').text('£' + a);
+      $('#s2').text(p);
+      $('#s3').text(r + '%');
+      $('#s4').text('£' + t);
+      $('#s5').text(moment(moment(), "DD-MM-YYYY").add(p, 'days').format('MMMM Do YYYY'))
+    }
+  });
+</script>
+{% endblock %}

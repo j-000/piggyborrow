@@ -1,0 +1,48 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+
+{% block body %}
+<div class="container">
+  <div class="row no-margin grey-info-block text-center" style="padding: 70px 0;">
+    <div class="col-md">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+      <div class="container-fluid login_form">
+        <form action="{{ url_for('login') }}" method="POST">
+          {{ loginform.hidden_tag() }}
+          {{ wtf.form_field(loginform.email) }}
+          {{ wtf.form_field(loginform.password) }}
+          <input type="submit" class="btn btn-success btn-md" value="Login">
+        </form>
+        <small><a href="{{ url_for('register') }}" >Need an account? Click to register</a></small><br>
+        <small><a href="javascript:void(0)" onclick="show('#reset_password_form')">Forgot password?</a></small>
+        <div id='reset_password_form' style="display: none;">
+          <form action="{{ url_for('login') }}" method="POST">
+            {{ form2.hidden_tag() }}
+            {{ wtf.form_field(form2.email) }}
+            <input type="submit" class="btn btn-success btn-md" value="Send">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block extrajs %}
+<script type="text/javascript">
+  function show(a){
+    $(a).toggle();
+  }
+</script>
+{% endblock %}

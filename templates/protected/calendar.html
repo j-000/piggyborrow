@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.css">
+  <link rel="stylesheet" media="print"  type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.print.css">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <h4>Calendar</h4>
+      <div id='calendar'></div>
+      <br>
+      <br>
+    </div>
+  </div> 
+</div>
+{% endblock %}
+{% block extrajs %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.9.0/fullcalendar.min.js"></script>
+<script type="text/javascript">
+  $(function() {
+    o = {
+      themeSystem: 'bootstrap4',
+      // header: {
+      //   left: 'prev,next today',
+      //   center: 'title',
+      //   right: 'month,agendaWeek,agendaDay'
+      // },
+      events: {{ quotes_for_calendar | safe }},
+      displayEventTime: false,
+      eventColor: '#378006',
+      eventTextColor: '#fff',
+      height: 500
+    }
+    $('#calendar').fullCalendar(o);
+  });
+</script>
+{% endblock %}

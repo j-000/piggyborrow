@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block extracss %}
+{% endblock %}
+
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <h1>Pay your bill</h1>
+      <h2>£ {{ "{:0.2f}".format(amount_due) }}</h2>
+      <form action="{{ url_for('pay') }}" method="POST">
+        <script
+          src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="pk_test_y0SxPWRX0tSMd0DOt7PFGqav"
+          data-amount="{{ amount_due_in_cents }}"
+          data-name="Demo Site"
+          data-description="Widget"
+          data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+          data-locale="auto"
+          data-currency="gbp">
+        </script>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

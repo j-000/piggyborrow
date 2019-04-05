@@ -1,0 +1,99 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block body %}
+<div class="container">
+  <div class="row text-center">
+    <div class="col">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+          <div class="alert alert-{{category}}" role="alert">
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col">
+      <img src="https://imagesvc.timeincapp.com/v3/mm/image?url=https%3A%2F%2Ffortunedotcom.files.wordpress.com%2F2019%2F01%2Fboo.jpg&w=800&q=85" alt="Generic placeholder image" width="200">
+    </div>
+    <div class="col">
+      <h4>Personal info</h4>
+      <table class="table-sm table-borderless">
+        <tbody>
+          <tr>
+            <td><strong>Name</strong></td>
+            <td>{{ current_user.name }} {{ current_user.surname }}</td>
+          </tr>
+          <tr>
+            <td><strong>Join date</strong></td>
+            <td>{{ moment(current_user.creation_timestamp).calendar() }}</td>
+          </tr>
+          <tr>
+            <td><strong>Address</strong></td>
+            <td>{{ current_user.address }}</td>
+          </tr>
+          <tr>
+            <td><strong>Postcode</strong></td>
+            <td>{{ current_user.postcode }}</td>
+          </tr>
+          <tr>
+            <td><strong>Email</strong></td>
+            <td>{{ current_user.email }}{% if current_user.verified_user %}
+                <small><span class="badge badge-success">Verified</span></small>
+            {% endif %}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h4>My Active Quotes</h4>
+      <ul class="list-group">
+        {% for quote in active_quotes %}
+          <li class="list-group-item">
+            <span class="badge badge-{{ quote.get_status()[1] }}">{{ quote.get_status().name }}</span> On 
+            <strong>{{ moment(quote.creation_timestamp).format('LLL') }}</strong> you requested 
+            <strong>£ {{ "{:0.2f}".format(quote.amount_requested) }}</strong> for 
+            <strong>{{ quote.duration_in_days }}</strong> days. 
+            <small>
+              <a href="#">Check progress</a>
+            </small> 
+            <small>
+              <a href="#" class="text-danger">Cancel</a>
+            </small>
+          </li>
+        {% endfor %}
+      </ul>
+      {% if not active_quotes %}
+        <p>There are no active quotes... <a href="{{ url_for('quotation') }}">Make a new quote!</a></p>
+      {% endif %}
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h4>Payments</h4>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col">
+      <h4>Settings</h4>
+      <ul class="list-group">
+        <a href="#">Edit Profile</a>
+        <a href="#">Notifications</a>
+        <a href="#">Payments</a>
+      </ul>
+    </div>
+  </div>
+  <hr>
+</div>
+{% endblock %}
+{% block extrajs %}
+{% endblock %}

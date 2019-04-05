@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link href="{{ url_for('static', filename='css/bootstrap2.min.css') }}" rel="stylesheet">
+	<title></title>
+</head>
+<body>
+	<h1>Your quote has been submitted</h1>
+
+	<p>Here are the details of your quote.</p>
+
+	<table class="text-center table">
+		<thead>
+			<tr>
+				<th>Quote reference</th>
+				<th>Amount</th>
+				<th>Daily interest rate (%)</th>
+				<th>Total interest</th>
+				<th>Total payable</th>
+				<th>Due date</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>{{ new_quote.id }}</td>
+				<td>£ {{ new_quote.amount_requested }}</td>
+				<td>{{ new_quote.get_rate().value }}%</td>
+				<td>£ {{ new_quote.get_interest_amount() }}</td>
+				<td>£ {{ new_quote.get_total_payable() }}</td>
+				<td>{{ new_quote.get_due_date() }}</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
+
