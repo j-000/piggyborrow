@@ -36,6 +36,33 @@
 {% endblock %}
 {% block extrajs %}
 <script type="text/javascript">
-  $(function() {$('#login').attr('href', '{{ url_for("login") }}' + window.location.search);});
+  $(function() {
+    $('#login').attr('href', '{{ url_for("login") }}' + window.location.search);
+    $('#register_email').attr('onkeyup', 'c()');
+  });
+  function c(){
+    var a, s, re, r;
+    s = $('#register_email');
+    a = s.val();
+    re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (re.test(String(a).toLowerCase())){
+      $.ajax({
+        url: '{{ url_for("api_email") }}',
+        data: {'e':a},
+        method: 'POST',
+        success: function(r){ 
+          r = JSON.parse(r);
+          if(r.valid){
+            s.removeClass('border-danger');
+            s.addClass('border-success');
+          }else{
+            s.removeClass('border-success');
+            s.addClass('border-danger');
+          }
+        },
+        error: function(error){console.log(error);}
+      });
+    }
+  }
 </script>
 {% endblock %}

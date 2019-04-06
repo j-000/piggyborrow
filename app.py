@@ -50,7 +50,6 @@ def index():
   return render_template('public/home.html', form=form, current_rate=current_rate)
 
 
-
 # register route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -94,6 +93,21 @@ def register():
     return redirect(url_for('login'))
 
   return render_template('public/register.html', form=registerform)
+
+
+# check email is not alreay register 
+@app.route('/api/email', methods=['POST'])
+def api_email():
+  if request.method == 'POST':
+    email_to_verify = escape(request.form.get('e'))
+    user = User.query.filter_by(email=email_to_verify).first()
+    print(user)
+    if user:
+      response = {'valid':False}
+    else:
+      response = {'valid': True}
+    return json.dumps(response) 
+
 
 
 @app.route('/confirm_email/<verify_token>')
@@ -210,7 +224,6 @@ def reset_password(recover_token):
   return render_template('public/reset_password.html',form=form, token=recover_token)
 
 
-
 # profile route
 @app.route('/profile', methods=['GET'])
 @login_required
@@ -283,7 +296,6 @@ def cancel_quote(quote_id):
     return redirect(url_for('profile'))
 
 
-
 # calendat route
 @app.route('/calendar', methods=['GET','POST'])
 @login_required
@@ -321,7 +333,6 @@ def pay():
   amount_due = current_user.get_amount_due() 
   amount_due_in_cents = amount_due * 100
   return render_template('protected/pay.html', amount_due_in_cents=amount_due_in_cents, amount_due=amount_due)
-
 
 
 @app.route('/help', methods=['GET','POST'])

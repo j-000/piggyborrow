@@ -20,7 +20,7 @@ class ResetPasswordForm(FlaskForm):
 class RegistrationForm(FlaskForm):
 	name = StringField('Name', validators=[InputRequired()])
 	surname = StringField('Surname', validators=[InputRequired()])
-	email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email!')])
+	email = StringField('Email', id='register_email' , validators=[InputRequired(), Email(message='Invalid email!')])
 	address = StringField('Address', validators=[InputRequired()])
 	postcode = StringField('Postcode', validators=[InputRequired()])
 	password = PasswordField('Password', validators=[InputRequired(),  Length(min=4, max=40, message='Your password must be at least 6 characters long and a mix of letters, numbers and special symbols.')])
