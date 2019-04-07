@@ -1,11 +1,14 @@
 ## piggyborrow - a flask application
 
 
+### [Watch the video of this application in action](https://github.com/j-000/piggyborrow/blob/master/repo_images/piggyborrow.mp4). 
+
+
 Main features:
 + Recover Password
 + Reset Password 
 + Confirm account through email - uses jwt tokens.
-+ Cookie setup if user is annonymous / has no account and performs a simple quote on main page. This cookie then assists in continuing that same quote after registration and email confirmation. 
++ Cookie setup if user is annonymous / has no account and performs a simple quote on main page. This cookie then assists in continuing that same quote after registration and email confirmation 
 + Admin area to manage Users, Quotes, Rates, Messages
 + Stripe integration for payments (test mode only)
 
