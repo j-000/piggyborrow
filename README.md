@@ -1,28 +1,37 @@
-# piggyborrow - a flask application
+## piggyborrow - a flask application
 
 
-### Login, authentication, cookies and session are all managed with Flask modules. More details in the [requirements.txt file](https://github.com/j-000/piggyborrow/blob/master/requirements.txt)
+Main features:
+[x] Recover Password
+[x] Reset Password 
+[x] Confirm account through email - uses jwt tokens.
+[x] Cookie setup if user is annonymous / has no account and performs a simple quote on main page. This cookie then assists in continuing that same quote after registration and email confirmation. 
+[x] Admin area to manage Users, Quotes, Rates, Messages
+[x] Stripe integration for payments (test mode only)
+
+More details in the [requirements.txt file](https://github.com/j-000/piggyborrow/blob/master/requirements.txt). 
+
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture.PNG "piggyborrow main page")
 
-### piggyborrow main page. It uses [Bootstrap](https://getbootstrap.com/) for the layout and styling. The spinner is a jQuery plugin with some custom styling. 
+piggyborrow main page. It uses [Bootstrap](https://getbootstrap.com/) for the layout and styling. The spinner is plain javascript and css. 
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture2.PNG "piggyborrow quote email confirmation")
 
-### The server side email sending is done via an asynchromnous thread using Google's smtp and [Flask-Mail](https://pythonhosted.org/Flask-Mail/).
+The server side email sending is done via an asynchromnous thread using Google's smtp and [Flask-Mail](https://pythonhosted.org/Flask-Mail/).
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture3.PNG "piggyborrow admin area")
 
-### Bootstrap layout, with integration of [Fontawesome icons](https://fontawesome.com/).
+Bootstrap layout, with integration of [Fontawesome icons](https://fontawesome.com/).
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture4.PNG "piggyborrow admin area - rate setup ")
 
-### In this route I wanted to use a calendar view and decided to use [FullCalendar.js](https://fullcalendar.io/) plugin to accomplish that. 
+In this route I wanted to use a calendar view and decided to use [FullCalendar.js](https://fullcalendar.io/) plugin to accomplish that. 
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture5.PNG "piggyborrow send us a message from profile")
 
-### Messages route within the profile. 
+Messages route within the profile. 
 
 ![alt text](https://github.com/j-000/piggyborrow/blob/master/repo_images/Capture6.PNG "piggyborrow quote form")
 
-### Quote form within the user profile.
+Quote form within the user profile.
