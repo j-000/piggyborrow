@@ -2,12 +2,12 @@
 
 
 Main features:
-[x] Recover Password
-[x] Reset Password 
-[x] Confirm account through email - uses jwt tokens.
-[x] Cookie setup if user is annonymous / has no account and performs a simple quote on main page. This cookie then assists in continuing that same quote after registration and email confirmation. 
-[x] Admin area to manage Users, Quotes, Rates, Messages
-[x] Stripe integration for payments (test mode only)
++ Recover Password
++ Reset Password 
++ Confirm account through email - uses jwt tokens.
++ Cookie setup if user is annonymous / has no account and performs a simple quote on main page. This cookie then assists in continuing that same quote after registration and email confirmation. 
++ Admin area to manage Users, Quotes, Rates, Messages
++ Stripe integration for payments (test mode only)
 
 More details in the [requirements.txt file](https://github.com/j-000/piggyborrow/blob/master/requirements.txt). 
 
