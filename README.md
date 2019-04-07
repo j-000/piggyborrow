@@ -1,7 +1,7 @@
 ## piggyborrow - a flask application
 
 
-#### [Download the video 6Mb] of this application in action(https://github.com/j-000/piggyborrow/blob/master/repo_images/piggyborrow.mp4). 
+#### [Download the video (6Mb)] of this application in action (https://github.com/j-000/piggyborrow/blob/master/repo_images/piggyborrow.mp4). 
 
 
 Main features:
