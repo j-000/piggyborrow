@@ -5,7 +5,7 @@ import re
 import datetime, time
 import stripe
 from datetime import date
-from flask import url_for, render_template, flash, redirect, request, escape, make_response
+from flask import url_for, render_template, flash, redirect, request, escape, make_response, jsonify
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap
 from flask_login import login_required, current_user, LoginManager, login_user, logout_user
@@ -101,7 +101,6 @@ def api_email():
   if request.method == 'POST':
     email_to_verify = escape(request.form.get('e'))
     user = User.query.filter_by(email=email_to_verify).first()
-    print(user)
     if user:
       response = {'valid':False}
     else:
@@ -474,12 +473,17 @@ def admin_quotes():
   quotes = Quote.query.all()
   return render_template('protected/admin/admin_quotes.html', quotes=quotes)
 
+
+
+
+
 @app.route('/admin/quote/<quote_id>', methods=['GET', 'POST'])
 @login_required
 def admin_quote(quote_id):
   if not current_user.is_admin:
     flash('This is a protected route for our admins. This attempt has been recorded.', 'info')
     return redirect(url_for('login'))
+
 
   quote_id = escape(quote_id)
   quote = Quote.query.get(quote_id)

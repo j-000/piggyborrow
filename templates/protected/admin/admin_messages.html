@@ -36,7 +36,7 @@
         <tbody>
           {% for message in messages_array%}
           <tr>
-            <td><button onclick="show_message('{{message.id}}')"type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#message_modal">
+            <td><button onclick="show_message('{{message.id}}')" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#message_modal">
               #{{ message.id }}
             </button></td>
             <td>{{ moment(message.creation_timestamp).calendar() }}</td>
