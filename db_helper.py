@@ -13,7 +13,7 @@ def create_admin():
 	admin = User(name='Joao', 
 		surname='Oliveira', 
 		address='General Office', 
-		postcode='NA1 1AH', email='jjasilva85@gmail.com', 
+		postcode='NA1 1AH', email='', 
 		password=generate_password_hash('123456789',method='sha256'),
 		verified_user=True,
 		is_admin=True)
@@ -23,7 +23,7 @@ def create_admin():
 def create_test_user():
 	test_user = User(name='Test', surname='Oliveira', address='Test Address', 
 		postcode='NA1 1AH', 
-		email='jjasilva84@l.com', 
+		email='4@l.com', 
 		password=generate_password_hash('123456789',method='sha256'), 
 		verified_user=True,
 		is_admin=False)
