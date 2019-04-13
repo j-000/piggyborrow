@@ -12,6 +12,13 @@ Main features:
 + Admin area to manage Users, Quotes, Rates, Messages
 + Stripe integration for payments (test mode only)
 
+Stack:
++ Python Flask (handles requests, authentication, routing and db queries)
++ SQLAlchemy (this example uses an sqlite db but could integrate mysql)
++ DB Migrations done Flask-Migrate
++ Bootstrap layout
+
+
 More details of modules used in the [requirements.txt file](https://github.com/j-000/piggyborrow/blob/master/requirements.txt). 
 
 
