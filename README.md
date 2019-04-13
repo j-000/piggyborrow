@@ -17,6 +17,7 @@ Stack:
 + SQLAlchemy (this example uses an sqlite db but could integrate mysql)
 + DB Migrations done via Flask-Migrate
 + Bootstrap layout
++ FullCalendar.js plugin
 
 
 More details of modules used in the [requirements.txt file](https://github.com/j-000/piggyborrow/blob/master/requirements.txt). 
