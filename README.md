@@ -15,7 +15,7 @@ Main features:
 Stack:
 + Python Flask (handles requests, authentication, routing and db queries)
 + SQLAlchemy (this example uses an sqlite db but could integrate mysql)
-+ DB Migrations done Flask-Migrate
++ DB Migrations done via Flask-Migrate
 + Bootstrap layout
 
 
